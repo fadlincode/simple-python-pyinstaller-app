@@ -10,4 +10,13 @@ node {
         }
         junit 'test-reports/results.xml'
     }
+    stage('Deploy') {
+        sh "docker run --rm -v \$(pwd)/sources:/src cdrx/pyinstaller-linux:python2 'pyinstaller -F add2vals.py'"
+        
+        archiveArtifacts 'sources/dist/add2vals'
+
+        // sleep 60s
+        sleep 60
+        echo 'Deploy success'
+    }
 }
