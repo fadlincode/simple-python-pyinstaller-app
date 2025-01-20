@@ -10,6 +10,9 @@ node {
         }
         junit 'test-reports/results.xml'
     }
+    stage('Manual Approval'){
+        input message: 'Lanjut ke tahap Deploy? (Klik "Proceed untuk lanjutkan")'
+    }
     stage('Deploy') {
         sh "docker run --rm -v \$(pwd)/sources:/src cdrx/pyinstaller-linux:python2 'pyinstaller -F add2vals.py'"
         
