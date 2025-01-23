@@ -17,6 +17,13 @@ node {
         sh "docker run --rm -v \$(pwd)/sources:/src cdrx/pyinstaller-linux:python2 'pyinstaller -F add2vals.py'"
         
         archiveArtifacts 'sources/dist/add2vals'
+        
+        sshagent(['SSH_GCP_JENKINS']) {
+            sh '''
+            echo "Starting deployment to Cloud..."
+            scp -o StrictHostKeyChecking=no sources/dist/add2vals fadlinarsin12@35.226.98.155:~/python-app/artifacts
+            '''
+        }
 
         // sleep 60s
         sleep 60
